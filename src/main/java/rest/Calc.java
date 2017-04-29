@@ -16,7 +16,6 @@ public class Calc {
             x = y;
             y = z;
             z = x + y;
-            System.out.println(z);
             if(z<=top&&z>0)resultList.add(z);
         }while (z < top&&z > 0);
         

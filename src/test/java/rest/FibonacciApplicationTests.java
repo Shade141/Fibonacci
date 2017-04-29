@@ -28,18 +28,32 @@ public class FibonacciApplicationTests {
 	Integer[] b = {1,1,2,3,5,8,13,21,34,55,89,144,233,377,610};
 	
     @Test
-    public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
+    public void noParamCalcShouldReturnDefaultMessage() throws Exception {
     	list.addAll(Arrays.asList(a));
         this.mockMvc.perform(get("/calc")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultList").value(list));
     }
     
     @Test
-    public void paramGreetingShouldReturnTailoredMessage() throws Exception {
+    public void paramCalcShouldReturnTailoredMessage() throws Exception {
     	list.addAll(Arrays.asList(b));
         this.mockMvc.perform(get("/calc").param("top", "900"))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.resultList").value(list));
+    }
+    
+    @Test
+    public void negativeParamCalcShouldReturnErrorMessage() throws Exception {
+    	list.addAll(Arrays.asList(b));
+        this.mockMvc.perform(get("/calc").param("top", "-30"))
+                .andDo(print()).andExpect(status().isBadRequest());
+    }
+    
+    @Test
+    public void nonIntegerParamCalcShouldReturnErrorMessage() throws Exception {
+    	list.addAll(Arrays.asList(b));
+        this.mockMvc.perform(get("/calc").param("top", "test"))
+                .andDo(print()).andExpect(status().isBadRequest());
     }
 
 }
